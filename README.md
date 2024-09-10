@@ -1,6 +1,7 @@
 # Residuum
 
 Sublime Text plugin with all the little stuff that doesn't fit anywhere else.
+It will probably never be published to Package Control.
 
 Built for ST4 on Windows and Linux (lightly tested).
 
@@ -12,22 +13,22 @@ interact with the OS, etc. Displays absolute text position in status bar next to
 
 Supported menu type is <b>C</b>ontext, <b>S</b>idebar, <b>T</b>ab.
 
-| Command                 | Menu | Description                                                    | Args                       |
-| :--------               | :--- | :------------                                                  | :-------                   |
-| sbot_split_view         | C S  | Toggle simple split view like VS, Word etc.                    |                            |
-| sbot_copy_name          | S T  | Copy file/dir name to clipboard.                               | S: `"args": {"paths": []}` |
-| sbot_copy_path          | S T  | Copy full file/dir path to clipboard.                          | S: `"args": {"paths": []}` |
-| sbot_copy_file          | S T  | Copy selected file to a new file in the same directory.        | S: `"args": {"paths": []}` |
-| sbot_delete_file        | C T  | Moves the file in current view to recycle/trash bin.           |                            |
-| sbot_run                | C S  | Run a script file (py, lua, cmd, bat, sh) and show the output. |                            |
-| sbot_click              | C S  | Open file (html, py, etc) as if you double clicked it.         | S: `"args": {"paths": []}` |
-| sbot_terminal           | C S  | Open a terminal here.                                          | S: `"args": {"paths": []}` |
-| sbot_tree               | C S  | Run tree cmd to new view.                                      | S: `"args": {"paths": []}` |
-| sbot_open_context_path  | C    | Open path under cursor like `[tag](C:\my\file.txt)`            |                            |
-| sbot_trim               | C    | Remove ws from Line ends.  | how: leading or trailing or both                               |
-| sbot_remove_empty_lines | C    | Like it says.              | how: remove_all or normalize ( to one)                         |
-| sbot_remove_ws          | C    | Like it says.              | how: remove_all or keep_eol or normalize (to one)              |
-| sbot_insert_line_indexes| C    | not in clean?              |                                                                |
+| Command                 | Menu | Description                                             | Args                   |
+| :--------               | :--- | :------------                                           | :-------               |
+| sbot_split_view         | C S  | Toggle simple split view like VS, Word etc.             |                        |
+| sbot_copy_name          | S T  | Copy file/dir name to clipboard.                        | S: paths: []           |
+| sbot_copy_path          | S T  | Copy full file/dir path to clipboard.                   | S: paths: []           |
+| sbot_copy_file          | S T  | Copy selected file to a new file in the same directory. | S: paths: []           |
+| sbot_delete_file        | C T  | Moves the file in current view to recycle/trash bin.    |                        |
+| sbot_run                | C S  | Run a script file (py, lua, cmd, bat, sh) and show the output. |                 |
+| sbot_click              | C S  | Open file (html, py, etc) as if you double clicked it.  | S: paths: []           |
+| sbot_terminal           | C S  | Open a terminal here.                                   | S: paths: []           |
+| sbot_tree               | C S  | Run tree cmd to new view.                               | S: paths: []           |
+| sbot_open_context_path  | C    | Open path under cursor like `[tag](C:\my\file.txt)`     |                        |
+| sbot_trim               | C    | Remove ws from Line ends.  | how: leading or trailing or both                    |
+| sbot_remove_empty_lines | C    | Like it says.              | how: remove_all or normalize ( to one)              |
+| sbot_remove_ws          | C    | Like it says.              | how: remove_all or keep_eol or normalize (to one)   |
+| sbot_insert_line_indexes| C    | not in clean?              |                                                     |
 
 
 There are no default `Context/Tab/Side Bar.sublime-menu` files in this plugin.
