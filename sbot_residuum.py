@@ -47,21 +47,22 @@ class SbotSplitViewCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         window = self.view.window()
+        caret = sc.get_single_caret(self.view)
 
-        if len(window.layout()['rows']) > 2:
-            # Remove split.
-            window.run_command("focus_group", {"group": 1})
-            window.run_command("close_file")
-            window.run_command("set_layout", {"cols": [0.0, 1.0], "rows": [0.0, 1.0], "cells": [[0, 0, 1, 1]]})
-        else:
-            # Add split.
-            caret = sc.get_single_caret(self.view)
-            sel_row, _ = self.view.rowcol(caret)  # current sel
-            window.run_command("set_layout", {"cols": [0.0, 1.0], "rows": [0.0, 0.5, 1.0], "cells": [[0, 0, 1, 1], [0, 1, 1, 2]]})
-            window.run_command("focus_group", {"group": 0})
-            window.run_command("clone_file")
-            window.run_command("move_to_group", {"group": 1})
-            self.view.run_command("goto_line", {"line": sel_row})
+        if window is not None:
+            if len(window.layout()['rows']) > 2:
+                # Remove split.
+                window.run_command("focus_group", {"group": 1})
+                window.run_command("close_file")
+                window.run_command("set_layout", {"cols": [0.0, 1.0], "rows": [0.0, 1.0], "cells": [[0, 0, 1, 1]]})
+            elif caret is not None:
+                # Add split.
+                sel_row, _ = self.view.rowcol(caret)  # current sel
+                window.run_command("set_layout", {"cols": [0.0, 1.0], "rows": [0.0, 0.5, 1.0], "cells": [[0, 0, 1, 1], [0, 1, 1, 2]]})
+                window.run_command("focus_group", {"group": 0})
+                window.run_command("clone_file")
+                window.run_command("move_to_group", {"group": 1})
+                self.view.run_command("goto_line", {"line": sel_row})
 
 
 #-----------------------------------------------------------------------------------
@@ -96,7 +97,7 @@ class SbotOpenContextPathCommand(sublime_plugin.TextCommand):
     def description(self, event):
         # For menu.
         path = self.find_path(event)
-        return "Open Path " + path
+        return f'Open Path {path}'
 
     def want_event(self):
         return True
@@ -114,7 +115,7 @@ class SbotTreeCommand(sublime_plugin.WindowCommand):
             cp = subprocess.run(cmd, universal_newlines=True, capture_output=True, shell=True, check=True)
             sc.create_new_view(self.window, cp.stdout)
         except Exception as e:
-            sc.create_new_view(self.window, f'Well, that did not go well: {e}', e.__traceback__)
+            sc.create_new_view(self.window, f'Well, that did not go well: {e} {e.__traceback__}')
 
     def is_visible(self, paths=None):
         dir, fn, path = sc.get_path_parts(self.window, paths)
@@ -166,7 +167,7 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
                 elif ext in SCRIPT_TYPES:
                     cmd_list.append(f'\"{path}\"')
                 else:
-                    sc.warn(f"Unsupported file type: {path}")
+                    sc.error(f'Unsupported file type: {path}')
                     return
 
                 if self.args:
@@ -378,4 +379,3 @@ def _do_sub(view, edit, reo, sub):
         orig = view.substr(region)
         new = reo.sub(sub, orig)
         view.replace(edit, region, new)
-
