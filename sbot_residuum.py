@@ -33,7 +33,7 @@ class SbotEvent(sublime_plugin.EventListener):
 
     def on_init(self, views):
         ''' First thing that happens when plugin/window created. Initialize everything. '''
-        pass
+        del views
 
     def on_selection_modified(self, view):
         ''' Show the abs position in the status bar. '''
@@ -46,11 +46,12 @@ class SbotSplitViewCommand(sublime_plugin.TextCommand):
     ''' Toggles between split file views. '''
 
     def run(self, edit):
+        del edit
         window = self.view.window()
         caret = sc.get_single_caret(self.view)
 
         if window is not None:
-            if len(window.layout()['rows']) > 2:
+            if len(window.layout()['rows']) > 2:  # pyright: ignore
                 # Remove split.
                 window.run_command("focus_group", {"group": 1})
                 window.run_command("close_file")
@@ -73,6 +74,7 @@ class SbotOpenContextPathCommand(sublime_plugin.TextCommand):
     '''
 
     def run(self, edit, event):
+        del edit
         path = self.find_path(event)
         sc.open_path(path)
 
@@ -108,7 +110,7 @@ class SbotTreeCommand(sublime_plugin.WindowCommand):
     ''' Run tree command to a new view. '''
 
     def run(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
+        dir, _, _ = sc.get_path_parts(self.window, paths)
 
         try:
             cmd = f'tree "{dir}" /a /f'
@@ -118,7 +120,7 @@ class SbotTreeCommand(sublime_plugin.WindowCommand):
             sc.create_new_view(self.window, f'Well, that did not go well: {e} {e.__traceback__}')
 
     def is_visible(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
+        dir, _, _ = sc.get_path_parts(self.window, paths)
         return dir is not None
 
 
@@ -133,13 +135,11 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
         self.paths = paths
         self.args = None
 
-        # Get user input for args - needs impl.
+        # Get user input for args - needs impl. TODO
         get_input = False
 
-        dir, fn, path = sc.get_path_parts(self.window, paths)
+        _, fn, _ = sc.get_path_parts(self.window, paths)
         if fn is not None:
-            _, ext = os.path.splitext(fn)
-
             if get_input:
                 self.window.show_input_panel(self.window.extract_variables()['folder'] + '>', "", self.on_done_input, None, None)
             else:
@@ -186,7 +186,7 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
 
     def is_visible(self, paths=None):
         vis = True
-        dir, fn, path = sc.get_path_parts(self.window, paths)
+        _, fn, _ = sc.get_path_parts(self.window, paths)
         if fn is None:
             vis = False
         else:
@@ -202,12 +202,12 @@ class SbotClickCommand(sublime_plugin.WindowCommand):
     Supports context and sidebar menus.
     '''
     def run(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
+        _, fn, path = sc.get_path_parts(self.window, paths)
         if fn is not None:
             sc.open_path(path)
 
     def is_visible(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
+        _, fn, _ = sc.get_path_parts(self.window, paths)
         return fn is not None
 
 
@@ -218,12 +218,12 @@ class SbotTerminalCommand(sublime_plugin.WindowCommand):
     Supports context and sidebar menus.
     '''
     def run(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
+        dir, _, _ = sc.get_path_parts(self.window, paths)
         if dir is not None:
             sc.open_terminal(dir)
 
     def is_visible(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
+        dir, _, _ = sc.get_path_parts(self.window, paths)
         return dir is not None
 
 
@@ -234,12 +234,12 @@ class SbotCopyNameCommand(sublime_plugin.WindowCommand):
     Supports context and sidebar menus.
     '''
     def run(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
+        _, _, path = sc.get_path_parts(self.window, paths)
         if path is not None:
             sublime.set_clipboard(os.path.split(path)[-1])
 
     def is_visible(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
+        _, _, path = sc.get_path_parts(self.window, paths)
         return path is not None
 
 
@@ -250,12 +250,12 @@ class SbotCopyPathCommand(sublime_plugin.WindowCommand):
     Supports context and sidebar menus.
     '''
     def run(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
+        _, _, path = sc.get_path_parts(self.window, paths)
         if path is not None:
             sublime.set_clipboard(path)
 
     def is_visible(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
+        _, _, path = sc.get_path_parts(self.window, paths)
         return path is not None
 
 
@@ -266,8 +266,8 @@ class SbotCopyFileCommand(sublime_plugin.WindowCommand):
     Supports context and sidebar menus.
     '''
     def run(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
-        if fn is not None:
+        _, fn, path = sc.get_path_parts(self.window, paths)
+        if fn is not None and path is not None:
             # Find a valid file name.
             ok = False
             root, ext = os.path.splitext(path)
@@ -282,7 +282,7 @@ class SbotCopyFileCommand(sublime_plugin.WindowCommand):
                 sublime.status_message("Couldn't copy file")
 
     def is_visible(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
+        _, fn, _ = sc.get_path_parts(self.window, paths)
         return fn is not None
 
 
@@ -293,12 +293,12 @@ class SbotDeleteFileCommand(sublime_plugin.WindowCommand):
     Supports context and tab menus.
     '''
     def run(self):  # , paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, None)
+        _, fn, path = sc.get_path_parts(self.window, None)
         if fn is not None:
             self.window.run_command("delete_file", {"files": [path], "prompt": False})
 
     def is_visible(self):  #, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, None)
+        _, fn, _ = sc.get_path_parts(self.window, None)
         return fn is not None
 
 
