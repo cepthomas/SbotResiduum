@@ -18,7 +18,7 @@ _rex = re.compile(r'\[(.*)\]\(([^\)]*)\)')
 #-----------------------------------------------------------------------------------
 def plugin_loaded():
     '''Called per plugin instance.'''
-    sc.info(f'plugin_loaded() {__package__}')
+    sc.debug(f'plugin_loaded() {__package__}')
 
 
 #-----------------------------------------------------------------------------------
@@ -47,22 +47,22 @@ class SbotSplitViewCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         del edit
-        window = self.view.window()
+        win = self.view.window()
         caret = sc.get_single_caret(self.view)
 
-        if window is not None:
-            if len(window.layout()['rows']) > 2:  # pyright: ignore
+        if win is not None:
+            if len(win.layout()['rows']) > 2:  # pyright: ignore
                 # Remove split.
-                window.run_command("focus_group", {"group": 1})
-                window.run_command("close_file")
-                window.run_command("set_layout", {"cols": [0.0, 1.0], "rows": [0.0, 1.0], "cells": [[0, 0, 1, 1]]})
+                win.run_command("focus_group", {"group": 1})
+                win.run_command("close_file")
+                win.run_command("set_layout", {"cols": [0.0, 1.0], "rows": [0.0, 1.0], "cells": [[0, 0, 1, 1]]})
             elif caret is not None:
                 # Add split.
                 sel_row, _ = self.view.rowcol(caret)  # current sel
-                window.run_command("set_layout", {"cols": [0.0, 1.0], "rows": [0.0, 0.5, 1.0], "cells": [[0, 0, 1, 1], [0, 1, 1, 2]]})
-                window.run_command("focus_group", {"group": 0})
-                window.run_command("clone_file")
-                window.run_command("move_to_group", {"group": 1})
+                win.run_command("set_layout", {"cols": [0.0, 1.0], "rows": [0.0, 0.5, 1.0], "cells": [[0, 0, 1, 1], [0, 1, 1, 2]]})
+                win.run_command("focus_group", {"group": 0})
+                win.run_command("clone_file")
+                win.run_command("move_to_group", {"group": 1})
                 self.view.run_command("goto_line", {"line": sel_row})
 
 
