@@ -10,8 +10,6 @@ from . import sbot_common as sc
 # Known script file types.
 SCRIPT_TYPES = ['.py', '.lua', '.cmd', '.bat', '.sh']
 
-# SBOT_SETTINGS_FILE = "SublimeBagOfTricks.sublime-settings"
-
 _rex = re.compile(r'\[(.*)\]\(([^\)]*)\)')
 
 
@@ -129,7 +127,6 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
     '''
     If the clicked file is a script, it is executed and the output presented in a new view.
     Supports context and sidebar menus.
-    TODO Should let user add args.
     '''
     def run(self, paths=None):
         self.paths = paths
