@@ -4,7 +4,12 @@ import shutil
 import re
 import sublime
 import sublime_plugin
-from . import sbot_common as sc
+
+# Kludge to make testing work.
+try:
+    import sbot_common as sc
+except:
+    from . import sbot_common as sc
 
 
 # Known script file types.
@@ -132,7 +137,7 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
         self.paths = paths
         self.args = None
 
-        # Get user input for args - needs impl. TODO
+        # Get user input for args - needs impl. TODOF
         get_input = False
 
         _, fn, _ = sc.get_path_parts(self.window, paths)
