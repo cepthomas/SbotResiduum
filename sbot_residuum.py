@@ -69,7 +69,7 @@ class SbotSplitViewCommand(sublime_plugin.TextCommand):
 
 
 #-----------------------------------------------------------------------------------
-class SbotOpenContextPathCommand(sublime_plugin.TextCommand):  # TODO1 test?
+class SbotOpenContextPathCommand(sublime_plugin.TextCommand):
     '''
     Borrowed from open_context_url.py. Note - that file is now 
     disabled and the function apparently implemented internally.
@@ -81,7 +81,7 @@ class SbotOpenContextPathCommand(sublime_plugin.TextCommand):  # TODO1 test?
         sc.open_path(path)
 
     def is_visible(self, event):
-        return self.find_path(event) is not None
+        return self.view.syntax().name != 'Notr' and self.find_path(event) is not None
 
     def find_path(self, event):
         # Get the text.

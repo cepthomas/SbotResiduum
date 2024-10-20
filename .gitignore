@@ -127,11 +127,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-# VS
-.vs/
-
-# Project files
-_dump.log
-_tracer.log
-out/
