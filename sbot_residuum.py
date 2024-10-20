@@ -69,9 +69,9 @@ class SbotSplitViewCommand(sublime_plugin.TextCommand):
 
 
 #-----------------------------------------------------------------------------------
-class SbotOpenContextPathCommand(sublime_plugin.TextCommand):
+class SbotOpenContextPathCommand(sublime_plugin.TextCommand):  # TODO1 test?
     '''
-    Borrowed from open_context_url.py. Note that that file is now 
+    Borrowed from open_context_url.py. Note - that file is now 
     disabled and the function apparently implemented internally.
     '''
 
