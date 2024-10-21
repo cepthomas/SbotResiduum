@@ -81,7 +81,9 @@ class SbotOpenContextPathCommand(sublime_plugin.TextCommand):
         sc.open_path(path)
 
     def is_visible(self, event):
-        return self.view.syntax().name != 'Notr' and self.find_path(event) is not None
+        return (self.view.syntax() is not None and
+                self.view.syntax().name != 'Notr' and
+                self.find_path(event) is not None)
 
     def find_path(self, event):
         # Get the text.
