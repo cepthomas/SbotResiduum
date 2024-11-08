@@ -3,7 +3,7 @@
 Sublime Text plugin with all the little stuff that doesn't fit anywhere else.
 It will probably never be published to Package Control.
 
-Built for ST4 on Windows and Linux (lightly tested).
+Built for ST4 on Windows. Linux and OSX should be ok but are minimally tested - PRs welcome.
 
 
 # Commands
@@ -68,5 +68,5 @@ Right click stuff works best with this global setting:
 
 - `sbot_common.py` contains miscellaneous common components primarily for internal use by the sbot family.
   This includes a very simple logger primarily for user-facing information, syntax errors and the like.
-  Log file is in $APPDATA\Sublime Text\Packages\User\.SbotStore\sbot.log.
+  Log file is in $APPDATA\Sublime Text\Packages\User\Dev\Dev.log.
 
