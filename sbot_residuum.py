@@ -10,7 +10,6 @@ except:
     import sbot_common as sc  # unittest import
 
 
-
 # Known script file types.
 SCRIPT_TYPES = ['.py', '.lua', '.cmd', '.bat', '.sh']
 
@@ -20,6 +19,7 @@ _rex = re.compile(r'\[(.*)\]\(([^\)]*)\)')
 #-----------------------------------------------------------------------------------
 def plugin_loaded():
     '''Called per plugin instance.'''
+    sc.init('Dev')
     sc.debug(f'plugin_loaded() {__package__}')
 
 
