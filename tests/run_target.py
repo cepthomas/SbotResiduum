@@ -2,4 +2,4 @@
 # For testing run command.
 
 if __name__ == '__main__':
-    print('+++ test-run.py from command line')
+    print("You ran a python file!")

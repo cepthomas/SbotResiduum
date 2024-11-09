@@ -16,7 +16,7 @@ import sbot_residuum
 class TestResiduum(unittest.TestCase):  # TODOT more tests
 
     def setUp(self):
-        pass
+        sc.init('_Test')
 
     def tearDown(self):
         pass

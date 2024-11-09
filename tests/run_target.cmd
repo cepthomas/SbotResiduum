@@ -1,6 +1,6 @@
 
 rem For testing run command.
 
-echo test-run.cmd says Howdy!
+echo "You ran a command file!"
 
 rem pause
