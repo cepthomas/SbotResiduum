@@ -19,7 +19,6 @@ _rex = re.compile(r'\[(.*)\]\(([^\)]*)\)')
 #-----------------------------------------------------------------------------------
 def plugin_loaded():
     '''Called per plugin instance.'''
-    sc.init('Dev')
     sc.debug(f'plugin_loaded() {__package__}')
 
 
