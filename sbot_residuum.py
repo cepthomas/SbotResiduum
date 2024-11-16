@@ -80,11 +80,12 @@ class SbotOpenContextPathCommand(sublime_plugin.TextCommand):
         sc.open_path(path)
 
     def is_visible(self, event):
-        return (self.view.syntax() is not None and
-                self.view.syntax().name != 'Notr' and
-                self.find_path(event) is not None)
+        syn = self.view.syntax()
+        path = self.find_path(event)
+        return syn is not None and syn.name != 'Notr' and path is not None
 
     def find_path(self, event):
+        ret = None
         # Get the text.
         pt = self.view.window_to_text((event["x"], event["y"]))
         line = self.view.line(pt) # Region
@@ -92,12 +93,16 @@ class SbotOpenContextPathCommand(sublime_plugin.TextCommand):
 
         # Test all matches on the line against the one where the cursor is.
         it = _rex.finditer(text)
+        print('>>>finditer', text, it)                    
         for match in it:
+            print('>>>match', match)                    
             if match.start() <= (pt - line.a) and match.end() >= (pt - line.a):
                 path = match.group(2)
+                print('>>>path', path)                    
                 if os.path.exists(path):
-                    return path
-        return None
+                    ret = path
+        print('>>>ret', ret)                    
+        return ret
 
     def description(self, event):
         # For menu.

@@ -24,7 +24,7 @@ Supported menu type is <b>C</b>ontext, <b>S</b>idebar, <b>T</b>ab.
 | sbot_click              | C S  | Open file (html, py, etc) as if you double clicked it.  | S: paths: []           |
 | sbot_terminal           | C S  | Open a terminal here.                                   | S: paths: []           |
 | sbot_tree               | C S  | Run tree cmd to new view.                               | S: paths: []           |
-| sbot_open_context_path  | C    | Open path under cursor like `[tag](C:\my\file.txt)`     |                        |
+| sbot_open_context_path  | C    | Open path under cursor like `[opt tag](C:\my\file.txt)` |                        |
 | sbot_trim               | C    | Remove ws from Line ends.  | how: leading or trailing or both                    |
 | sbot_remove_empty_lines | C    | Like it says.              | how: remove_all or normalize ( to one)              |
 | sbot_remove_ws          | C    | Like it says.              | how: remove_all or keep_eol or normalize (to one)   |
