@@ -86,6 +86,7 @@ class SbotOpenContextPathCommand(sublime_plugin.TextCommand):
 
     def find_path(self, event):
         ret = None
+
         # Get the text.
         pt = self.view.window_to_text((event["x"], event["y"]))
         line = self.view.line(pt) # Region
@@ -93,15 +94,11 @@ class SbotOpenContextPathCommand(sublime_plugin.TextCommand):
 
         # Test all matches on the line against the one where the cursor is.
         it = _rex.finditer(text)
-        print('>>>finditer', text, it)                    
         for match in it:
-            print('>>>match', match)                    
             if match.start() <= (pt - line.a) and match.end() >= (pt - line.a):
                 path = match.group(2)
-                print('>>>path', path)                    
                 if os.path.exists(path):
                     ret = path
-        print('>>>ret', ret)                    
         return ret
 
     def description(self, event):
