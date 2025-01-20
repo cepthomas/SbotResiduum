@@ -139,7 +139,7 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
         self.paths = paths
         self.args = None
 
-        # Get user input for args - needs impl. TODOF
+        # Get user input for args - needs impl. FUTURE
         get_input = False
 
         _, fn, _ = sc.get_path_parts(self.window, paths)

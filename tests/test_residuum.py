@@ -13,7 +13,7 @@ import sbot_residuum
 
 
 #-----------------------------------------------------------------------------------
-class TestResiduum(unittest.TestCase):  # TODOT more tests
+class TestResiduum(unittest.TestCase):  # TEST more tests
 
     def setUp(self):
         pass
