@@ -68,5 +68,5 @@ Right click stuff works best with this global setting:
 
 - `sbot_common.py` contains miscellaneous common components primarily for internal use by the sbot family.
   This includes a very simple logger primarily for user-facing information, syntax errors and the like.
-  Log file is in $APPDATA\Sublime Text\Packages\User\Dev\Dev.log.
+  Log file is in $APPDATA\Sublime Text\Packages\User\Residuum\Residuum.log.
 
