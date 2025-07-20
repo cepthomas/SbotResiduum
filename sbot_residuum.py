@@ -19,7 +19,7 @@ _rex = re.compile(r'\[(.*)\]\(([^\)]*)\)')
 #-----------------------------------------------------------------------------------
 def plugin_loaded():
     '''Called per plugin instance.'''
-    sc.debug(f'plugin_loaded() {__package__}')
+    pass
 
 
 #-----------------------------------------------------------------------------------
@@ -190,7 +190,7 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
 
     def is_visible(self, paths=None):
         vis = True
-        _, fn, _ = sc.get_path_parts(self.window, paths)
+        _, fn, _ = sc.get_path_parts(self.window, paths) 
         if fn is None:
             vis = False
         else:
@@ -206,13 +206,27 @@ class SbotClickCommand(sublime_plugin.WindowCommand):
     Supports context and sidebar menus.
     '''
     def run(self, paths=None):
-        _, fn, path = sc.get_path_parts(self.window, paths)
-        if fn is not None:
-            sc.open_path(path)
+
+        tgt = '???'
+        if paths[0].startswith('http'):
+            tgt = paths[0]
+        else:
+            _, fn, path = sc.get_path_parts(self.window, paths)
+            tgt = path
+        sc.open_path(tgt)
 
     def is_visible(self, paths=None):
-        _, fn, _ = sc.get_path_parts(self.window, paths)
-        return fn is not None
+        vis = False
+        if paths != None:
+            if paths[0].startswith('http'):
+                vis = True
+            else:
+                _, fn, _ = sc.get_path_parts(self.window, paths)
+                vis = fn is not None
+        return vis
+
+        # _, fn, _ = sc.get_path_parts(self.window, paths)
+        # return fn is not None
 
 
 #-----------------------------------------------------------------------------------

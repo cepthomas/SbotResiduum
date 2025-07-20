@@ -3,7 +3,7 @@
 Sublime Text plugin with all the little stuff that doesn't fit anywhere else.
 It will probably never be published to Package Control.
 
-Built for ST4 on Windows. Linux and OSX should be ok but are minimally tested - PRs welcome.
+Built for ST4 on Windows. Linux and OSX should be ok but are not tested - PRs welcome.
 
 
 # Commands
@@ -13,19 +13,19 @@ interact with the OS, etc. Displays absolute text position in status bar next to
 
 Supported menu type is <b>C</b>ontext, <b>S</b>idebar, <b>T</b>ab.
 
-| Command                 | Menu | Description                                             | Args                   |
-| :--------               | :--- | :------------                                           | :-------               |
-| sbot_split_view         | C S  | Toggle simple split view like VS, Word etc.             |                        |
-| sbot_copy_name          | S T  | Copy file/dir name to clipboard.                        | S: paths: []           |
-| sbot_copy_path          | S T  | Copy full file/dir path to clipboard.                   | S: paths: []           |
-| sbot_copy_file          | S T  | Copy selected file to a new file in the same directory. | S: paths: []           |
-| sbot_delete_file        | C T  | Moves the file in current view to recycle/trash bin.    |                        |
+| Command                 | Menu | Description                                                    | Args            |
+| :--------               | :--- | :------------                                                  | :-------        |
+| sbot_split_view         | C S  | Toggle simple split view like VS, Word etc.                    |                 |
+| sbot_copy_name          | S T  | Copy file/dir name to clipboard.                               | S: paths: []    |
+| sbot_copy_path          | S T  | Copy full file/dir path to clipboard.                          | S: paths: []    |
+| sbot_copy_file          | S T  | Copy selected file to a new file in the same directory.        | S: paths: []    |
+| sbot_delete_file        | C T  | Moves the file in current view to recycle/trash bin.           |                 |
 | sbot_run                | C S  | Run a script file (py, lua, cmd, bat, sh) and show the output. |                 |
-| sbot_click              | C S  | Open file (html, py, etc) as if you double clicked it.  | S: paths: []           |
-| sbot_terminal           | C S  | Open a terminal here.                                   | S: paths: []           |
-| sbot_tree               | C S  | Run tree cmd to new view.                               | S: paths: []           |
-| sbot_open_context_path  | C    | Open path under cursor like `[opt tag](C:\my\file.txt)` |                        |
-| sbot_insert_line_indexes| C    | Insert line numbers at beginning of line                |                                                     |
+| sbot_click              | C S  | Open url, html, py, etc as if you double clicked it.           | S: paths: []    |
+| sbot_terminal           | C S  | Open a terminal here.                                          | S: paths: []    |
+| sbot_tree               | C S  | Run tree cmd to new view.                                      | S: paths: []    |
+| sbot_open_context_path  | C    | Open path under cursor like `[opt tag](C:\my\file.txt)`        |                 |
+| sbot_insert_line_indexes| C    | Insert line numbers at beginning of line                       |                 |
 | sbot_trim               | C    | Remove ws from Line ends.  | how: leading OR trailing OR both                    |
 | sbot_remove_empty_lines | C    | Like it says.              | how: remove_all OR normalize ( to one)              |
 | sbot_remove_ws          | C    | Like it says.              | how: remove_all OR keep_eol OR normalize (to one)   |
@@ -38,7 +38,7 @@ Add the ones you like to your own `Context/Tab/Side Bar.sublime-menu` files. Typ
 { "caption": "Copy Path", "command": "sbot_copy_path"},
 { "caption": "Copy File", "command": "sbot_copy_file"},
 { "caption": "Delete File", "command": "sbot_delete_file" },
-{ "caption": "Click File", "command": "sbot_click"},
+{ "caption": "Click", "command": "sbot_click"},
 { "caption": "Split View 2 Pane", "command": "sbot_split_view" },
 { "caption": "Run", "command": "sbot_run" },
 { "caption": "Terminal Here", "command": "sbot_terminal" },
