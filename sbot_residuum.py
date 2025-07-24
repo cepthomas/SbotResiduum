@@ -134,12 +134,13 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
     '''
     If the clicked file is a script, it is executed and the output presented in a new view.
     Supports context and sidebar menus.
+    Currently doesn't support entering user args.
     '''
     def run(self, paths=None):
         self.paths = paths
         self.args = None
 
-        # Get user input for args - needs impl. FUTURE
+        # Get user input for args - needs impl.
         get_input = False
 
         _, fn, _ = sc.get_path_parts(self.window, paths)
