@@ -10,12 +10,6 @@ except:
     import sbot_common as sc  # unittest import
 
 
-# Known script file types.
-SCRIPT_TYPES = ['.py', '.lua', '.cmd', '.bat', '.sh']
-
-_rex = re.compile(r'\[(.*)\]\(([^\)]*)\)')
-
-
 #-----------------------------------------------------------------------------------
 def plugin_loaded():
     '''Called per plugin instance.'''
@@ -93,7 +87,8 @@ class SbotOpenContextPathCommand(sublime_plugin.TextCommand):
         text = self.view.substr(line)
 
         # Test all matches on the line against the one where the cursor is.
-        it = _rex.finditer(text)
+        rex = re.compile(r'\[(.*)\]\(([^\)]*)\)')
+        it = rex.finditer(text)
         for match in it:
             if match.start() <= (pt - line.a) and match.end() >= (pt - line.a):
                 path = match.group(2)
@@ -118,7 +113,7 @@ class SbotTreeCommand(sublime_plugin.WindowCommand):
         dir, _, _ = sc.get_path_parts(self.window, paths)
 
         try:
-            cmd = f'tree "{dir}" /a /f'
+            cmd = f'tree "{dir}" /a /f' # TODO try treex first? + options.
             cp = subprocess.run(cmd, universal_newlines=True, capture_output=True, shell=True, check=True)
             sc.create_new_view(self.window, cp.stdout)
         except Exception as e:
@@ -136,6 +131,10 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
     Supports context and sidebar menus.
     Currently doesn't support entering user args.
     '''
+
+    # Supported script file types.
+    script_types = ['.py', '.lua', '.cmd', '.bat', '.sh']
+
     def run(self, paths=None):
         self.paths = paths
         self.args = None
@@ -169,7 +168,7 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
                 elif ext == '.lua':
                     cmd_list.append('lua')
                     cmd_list.append(f'\"{path}\"')
-                elif ext in SCRIPT_TYPES:
+                elif ext in self.script_types:
                     cmd_list.append(f'\"{path}\"')
                 else:
                     sc.error(f'Unsupported file type: {path}')
@@ -196,7 +195,7 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
             vis = False
         else:
             _, ext = os.path.splitext(fn)
-            vis = ext in SCRIPT_TYPES
+            vis = ext in self.script_types
         return vis
 
 
