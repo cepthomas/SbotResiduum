@@ -2,7 +2,7 @@ import sys
 import os
 import traceback
 import unittest
-from unittest.mock import MagicMock
+# from unittest.mock import MagicMock
 
 # Set up the sublime emulation environment.
 import emu_sublime_api as emu
@@ -13,7 +13,7 @@ import sbot_residuum
 
 
 #-----------------------------------------------------------------------------------
-class TestResiduum(unittest.TestCase):  # TEST more tests
+class TestResiduum(unittest.TestCase):  # TODO1 more tests
 
     def setUp(self):
         pass
