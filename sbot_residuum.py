@@ -211,7 +211,7 @@ class SbotClickCommand(sublime_plugin.WindowCommand):
         if paths[0].startswith('http'):
             tgt = paths[0]
         else:
-            _, fn, path = sc.get_path_parts(self.window, paths)
+            _, _, path = sc.get_path_parts(self.window, paths)
             tgt = path
         sc.open_path(tgt)
 
