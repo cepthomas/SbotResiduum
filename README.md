@@ -13,22 +13,25 @@ interact with the OS, etc. Displays absolute text position in status bar next to
 
 Supported menu type is <b>C</b>ontext, <b>S</b>idebar, <b>T</b>ab.
 
-| Command                 | Menu | Description                                                    | Args            |
-| :--------               | :--- | :------------                                                  | :-------        |
-| sbot_split_view         | C S  | Toggle simple split view like VS, Word etc.                    |                 |
-| sbot_copy_name          | S T  | Copy file/dir name to clipboard.                               | S: paths: []    |
-| sbot_copy_path          | S T  | Copy full file/dir path to clipboard.                          | S: paths: []    |
-| sbot_copy_file          | S T  | Copy selected file to a new file in the same directory.        | S: paths: []    |
-| sbot_delete_file        | C T  | Moves the file in current view to recycle/trash bin.           |                 |
-| sbot_run                | C S  | Run a script file (py, lua, cmd, bat, sh) and show the output. |                 |
-| sbot_click              | C S  | Open url, html, py, etc as if you double clicked it.           | S: paths: []    |
-| sbot_terminal           | C S  | Open a terminal here.                                          | S: paths: []    |
-| sbot_tree               | C S  | Run tree cmd to new view.                                      | S: paths: []    |
-| sbot_open_context_path  | C    | Open path under cursor like `[opt tag](C:\my\file.txt)`        |                 |
-| sbot_insert_line_indexes| C    | Insert line numbers at beginning of line                       |                 |
+| Command                 | Menu | Description                                                      | Args          |
+| :--------               | :--- | :------------                                                    | :-------      |
+| sbot_split_view         | C S  | Toggle simple split view like VS, Word etc.                      |               |
+| sbot_copy_name          | S T  | Copy file/dir name to clipboard.                                 | S: paths: []  |
+| sbot_copy_path          | S T  | Copy full file/dir path to clipboard.                            | S: paths: []  |
+| sbot_copy_file          | S T  | Copy selected file to a new file in the same directory.          | S: paths: []  |
+| sbot_delete_file        | C T  | Moves the file in current view to recycle/trash bin.             |               |
+| sbot_run                | C S  | Run a script file (py, lua, cmd, bat, sh) and show the output.   |               |
+| sbot_click              | C S  | Open url, html, py, etc as if you double clicked it.             | S: paths: []  |
+| sbot_terminal           | C S  | Open a terminal here.                                            | S: paths: []  |
+| sbot_tree               | C S  | Run tree cmd to new view.                                        | S: paths: []  |
+| sbot_open_context_path  | C    | Open path under cursor like `[opt tag](C:\my\file.txt)`          |               |
+| sbot_insert_line_indexes| C    | Insert line numbers at beginning of line                         |               |
 | sbot_trim               | C    | Remove ws from Line ends.  | how: leading OR trailing OR both                    |
 | sbot_remove_empty_lines | C    | Like it says.              | how: remove_all OR normalize ( to one)              |
 | sbot_remove_ws          | C    | Like it says.              | how: remove_all OR keep_eol OR normalize (to one)   |
+| sbot_format_json        | C    | Simple json formatter. Converts comments to valid json elements  |               |
+| sbot_format_xml         | C    | Simple xml formatter.                                            |               |
+| sbot_format_cx_src      | C    | Simple C/C++/C# formatter. Uses AStyle.                          |               |
 
 
 There are no default `Context/Tab/Side Bar.sublime-menu` files in this plugin.
@@ -52,12 +55,18 @@ Add the ones you like to your own `Context/Tab/Side Bar.sublime-menu` files. Typ
 { "caption": "Remove WS Except EOL", "command": "sbot_remove_ws", "args" : { "how" : "keep_eol" } },
 { "caption": "Collapse WS", "command": "sbot_remove_ws", "args" : { "how" : "normalize" } },
 { "caption": "Insert Line Indexes", "command": "sbot_insert_line_indexes" },
+{ "caption": "Format C/C++/C#", "command": "sbot_format_cx_src" },
+{ "caption": "Format json", "command": "sbot_format_json" },
+{ "caption": "Format xml", "command": "sbot_format_xml" },
 ```
 
 
 # Settings
 
-None.
+| Setting            | Description         | Options                                     |
+| :--------          | :-------            | :------                                     |
+| tab_size           | Spaces per tab      | Currently applies to all file types         |
+
 
 Right click stuff works best with this global setting:
 ```
