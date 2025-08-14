@@ -9,12 +9,7 @@ import xml
 import xml.dom.minidom
 import sublime
 import sublime_plugin
-
-
-try:
-    from . import sbot_common as sc  # normal import
-except:
-    import sbot_common as sc  # unittest import
+from . import sbot_common as sc
 
 
 # Syntax defs.
