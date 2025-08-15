@@ -1,3 +1,4 @@
+import sys
 import os
 import subprocess
 import shutil
@@ -9,6 +10,10 @@ import xml
 import xml.dom.minidom
 import sublime
 import sublime_plugin
+
+# my_path = os.path.dirname(__file__)
+# if my_path not in sys.path: sys.path.insert(0, my_path)
+
 from . import sbot_common as sc
 
 
