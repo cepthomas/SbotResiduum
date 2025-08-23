@@ -125,7 +125,8 @@ class SbotTreeCommand(sublime_plugin.WindowCommand):
         dir, _, _ = sc.get_path_parts(self.window, paths)
 
         try:
-            cmd = f'tree "{dir}" /a /f' # TODO try treex first? + options.
+            # Try treex first.
+            cmd = f'treex -c "{dir}"' if shutil.which("treex") else f'tree "{dir}" /a /f'
             cp = subprocess.run(cmd, universal_newlines=True, capture_output=True, shell=True, check=True)
             sc.create_new_view(self.window, cp.stdout)
         except Exception as e:
