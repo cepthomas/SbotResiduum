@@ -76,7 +76,7 @@ class SbotSplitViewCommand(sublime_plugin.TextCommand):
 #-----------------------------------------------------------------------------------
 class SbotOpenContextPathCommand(sublime_plugin.TextCommand):
     '''
-    Borrowed from open_context_url.py. Note - that file is now 
+    Borrowed from open_context_url.py. Note - that file is now
     disabled and the function apparently implemented internally.
     '''
 
@@ -141,38 +141,16 @@ class SbotTreeCommand(sublime_plugin.WindowCommand):
 class SbotRunCommand(sublime_plugin.WindowCommand):
     '''
     If the clicked file is a script, it is executed and the output presented in a new view.
+    Otherwise acts as if you had double-clicked the file in the UI, honors your file associations.
     Supports context and sidebar menus.
-    Currently doesn't support entering user args.
+    Doesn't support entering user args currently.
     '''
 
-    # Supported script file types.
-    script_types = ['.py', '.lua', '.cmd', '.bat', '.sh']
-
     def run(self, paths=None):
-        self.paths = paths
-        self.args = None
+        dir, fn, path = sc.get_path_parts(self.window, paths)
 
-        # Get user input for args - needs impl.
-        get_input = False
-
-        _, fn, _ = sc.get_path_parts(self.window, paths)
-        if fn is not None:
-            if get_input:
-                self.window.show_input_panel(self.window.extract_variables()['folder'] + '>', "", self.on_done_input, None, None)
-            else:
-                self.execute()
-
-    def on_done_input(self, text):
-        self.args = text if len(text) > 0 else None
-        self.execute()
-
-    def execute(self):
-        # Assemble and execute.
-        dir, fn, path = sc.get_path_parts(self.window, self.paths)
-
-        if fn is not None:
+        if fn is not None: # Plain file
             _, ext = os.path.splitext(fn)
-
             try:
                 cmd_list = []
                 if ext == '.py':
@@ -181,17 +159,14 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
                 elif ext == '.lua':
                     cmd_list.append('lua')
                     cmd_list.append(f'\"{path}\"')
-                elif ext in self.script_types:
+                elif ext in ['.cmd', '.bat', '.sh']:
                     cmd_list.append(f'\"{path}\"')
                 else:
-                    sc.error(f'Unsupported file type: {path}')
+                    # Simple file click.
+                    sc.open_path(path)
                     return
 
-                if self.args:
-                    cmd_list.append(self.args)
-
                 cmd = ' '.join(cmd_list)
-
                 cp = subprocess.run(cmd, cwd=dir, universal_newlines=True, capture_output=True, shell=True)  # check=True)
                 output = cp.stdout
                 errors = cp.stderr
@@ -199,47 +174,22 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
                     output = output + '============ stderr =============\n' + errors
                 sc.create_new_view(self.window, output)
             except Exception as e:
-                sc.error(f"Execute script failed: {e}", e.__traceback__)
+                sc.error(f"Run failed: {e}", e.__traceback__)
+        elif dir is not None: # Plain directory
+            pass # or??
+        elif path.startswith('http'): # Special case.
+            sc.open_path(path)
+        else:
+            sc.error(f"Invalid path: {path}")
+
 
     def is_visible(self, paths=None):
-        vis = True
-        _, fn, _ = sc.get_path_parts(self.window, paths) 
-        if fn is None:
-            vis = False
-        else:
-            _, ext = os.path.splitext(fn)
-            vis = ext in self.script_types
-        return vis
-
-
-#-----------------------------------------------------------------------------------
-class SbotClickCommand(sublime_plugin.WindowCommand): 
-    '''
-    Acts as if you had clicked the file in the UI, honors your file associations.
-    Supports context and sidebar menus.
-    '''
-    def run(self, paths=None):
-
-        tgt = '???'
-        if paths[0].startswith('http'):
-            tgt = paths[0]
-        else:
-            _, _, path = sc.get_path_parts(self.window, paths)
-            tgt = path
-        sc.open_path(tgt)
-
-    def is_visible(self, paths=None):
-        vis = False
-        if paths != None:
-            if paths[0].startswith('http'):
-                vis = True
-            else:
-                _, fn, _ = sc.get_path_parts(self.window, paths)
-                vis = fn is not None
-        return vis
-
+        return True
+        # vis = True
         # _, fn, _ = sc.get_path_parts(self.window, paths)
-        # return fn is not None
+        # if fn is None:
+        #     vis = False
+        # return vis
 
 
 #-----------------------------------------------------------------------------------
@@ -429,10 +379,10 @@ class SbotFormatXmlCommand(sublime_plugin.TextCommand):
                         n.nodeValue = n.nodeValue.strip()
                 elif n.nodeType == xml.dom.minidom.Node.ELEMENT_NODE:
                     clean(n)
-        
+
         try:
             top = xml.dom.minidom.parseString(s)
-            clean(top)  
+            clean(top)
             top.normalize()
             sindent = ' ' * int(tab_size)  # pyright: ignore
             s = top.toprettyxml(indent=sindent)
@@ -455,7 +405,7 @@ class SbotFormatCxCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         del edit
-        
+
         # Current syntax.
         syntax = str(self.view.settings().get('syntax'))
         settings = sublime.load_settings(sc.get_settings_fn())

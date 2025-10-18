@@ -214,7 +214,7 @@ def get_path_parts(window, paths):
     '''
     Slide and dice into useful parts. paths is a list of which only the first is considered.
     Returns (dir, fn, path) where:
-    - path is fully expanded path or None if invalid.
+    - path is fully expanded path or valid url or None if invalid.
     - fn is None for a directory.
     '''
     dir = None
@@ -237,14 +237,12 @@ def get_path_parts(window, paths):
         if exp_path is not None:
             if os.path.isdir(exp_path):
                 dir = exp_path
-                path = exp_path
             elif os.path.isfile(exp_path):
-                path = exp_path
                 dir, fn = os.path.split(exp_path)
             else:
                 dir = None
                 fn = None
-                path = None
+        path = exp_path
 
     return (dir, fn, path)
 
