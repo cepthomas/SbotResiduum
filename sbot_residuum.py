@@ -167,7 +167,7 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
                     return
 
                 cmd = ' '.join(cmd_list)
-                cp = subprocess.run(cmd, cwd=dir, universal_newlines=True, capture_output=True, shell=True)  # check=True)
+                cp = subprocess.run(cmd, cwd=dir, universal_newlines=True, capture_output=True, shell=True)
                 output = cp.stdout
                 errors = cp.stderr
                 if len(errors) > 0:
@@ -182,14 +182,11 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
         else:
             sc.error(f"Invalid path: {path}")
 
-
     def is_visible(self, paths=None):
-        return True
-        # vis = True
-        # _, fn, _ = sc.get_path_parts(self.window, paths)
-        # if fn is None:
-        #     vis = False
-        # return vis
+        dir, fn, path = sc.get_path_parts(self.window, paths)
+        if fn is not None or path.startswith('http'): # Special case.
+            return True
+        return False
 
 
 #-----------------------------------------------------------------------------------
@@ -351,7 +348,6 @@ class SbotInsertLineIndexesCommand(sublime_plugin.TextCommand):
                 line_num += 1
                 # Adjust for inserts.
                 offset += width + 1
-
 
 
 #-----------------------------------------------------------------------------------

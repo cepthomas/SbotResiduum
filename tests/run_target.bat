@@ -1,8 +1,3 @@
-
-rem For testing run command.
-
 @echo off
-
+rem For testing run command.
 echo "You ran a batch file!"
-
-rem dir
