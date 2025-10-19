@@ -138,6 +138,62 @@ class SbotTreeCommand(sublime_plugin.WindowCommand):
 
 
 #-----------------------------------------------------------------------------------
+class SbotSniffBinCommand(sublime_plugin.TextCommand):
+    ''' Reports non-ascii characters in the view. '''
+
+    def run(self, edit):
+
+        # TODO Options for show/dump/find etc.
+        # inst_limit = 100
+        # unexp_repl = { 0:'<<NUL>>', '\n':'<<LF>>', '\r':'<<CR>>', '\t':'<<TAB>>', '\033':'<<ESC>>' }
+
+        pos = 0
+        regnum = 0
+        xlat_buff = []
+        inst_buff = []
+
+
+        for region in sc.get_sel_regions(self.view):
+            xlat_buff = [f'===== Translation Region {regnum} =====\n']
+            inst_buff = [f'===== Instances Region {regnum} =====\n']
+            # inst_buff.append([f'===== Region {regnum} =====\n'])
+
+            line_num = 1
+            for line_reg in self.view.split_by_newlines(region):
+                col_num = 1
+
+                text = self.view.substr(line_reg)
+                for ch in text:
+                    if ch.isprintable():
+                        xlat_buff.append(ch)
+                    elif ch == '\n':
+                        xlat_buff.append('<<LF>>')
+                    elif ch == '\r':
+                        xlat_buff.append('<<CR>>')
+                    elif ch == '\t':
+                        xlat_buff.append('<<TAB>>')
+                    elif ch == '\0':
+                        xlat_buff.append('<<NUL>>')
+                    elif ch == '\033':
+                        xlat_buff.append('<<ESC>>')
+                    else: # Everything else is binary.
+                        xlat_buff.append(f'<<0x{ord(ch):04x}>>')
+                        inst_buff.append(f'line:{line_num} col:{col_num} val:0x{ord(ch):04x}\n')
+
+                    col_num += 1
+                    pos += 1
+
+                line_num += 1
+
+                # TODO option:
+                xlat_buff.append('\n')
+
+        print('!!!', type(xlat_buff))
+
+        sc.create_new_view(self.view.window(), "".join(xlat_buff))
+
+
+#-----------------------------------------------------------------------------------
 class SbotRunCommand(sublime_plugin.WindowCommand):
     '''
     If the clicked file is a script, it is executed and the output presented in a new view.
@@ -184,7 +240,7 @@ class SbotRunCommand(sublime_plugin.WindowCommand):
 
     def is_visible(self, paths=None):
         dir, fn, path = sc.get_path_parts(self.window, paths)
-        if fn is not None or path.startswith('http'): # Special case.
+        if fn is not None or (path is not None and path.startswith('http')): # Special case.
             return True
         return False
 
