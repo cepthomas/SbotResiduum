@@ -152,11 +152,9 @@ class SbotSniffBinCommand(sublime_plugin.TextCommand):
         xlat_buff = []
         inst_buff = []
 
-
         for region in sc.get_sel_regions(self.view):
             xlat_buff = [f'===== Translation Region {regnum} =====\n']
             inst_buff = [f'===== Instances Region {regnum} =====\n']
-            # inst_buff.append([f'===== Region {regnum} =====\n'])
 
             line_num = 1
             for line_reg in self.view.split_by_newlines(region):
@@ -164,7 +162,9 @@ class SbotSniffBinCommand(sublime_plugin.TextCommand):
 
                 text = self.view.substr(line_reg)
                 for ch in text:
-                    if ch.isprintable():
+                    print(ch)
+
+                    if ch >= ' ' and ch <= '~':
                         xlat_buff.append(ch)
                     elif ch == '\n':
                         xlat_buff.append('<<LF>>')
