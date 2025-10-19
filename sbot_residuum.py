@@ -188,8 +188,6 @@ class SbotSniffBinCommand(sublime_plugin.TextCommand):
                 # TODO option:
                 xlat_buff.append('\n')
 
-        print('!!!', type(xlat_buff))
-
         sc.create_new_view(self.view.window(), "".join(xlat_buff))
 
 
