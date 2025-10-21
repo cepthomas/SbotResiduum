@@ -137,69 +137,69 @@ class SbotTreeCommand(sublime_plugin.WindowCommand):
         return dir is not None
 
 
-#-----------------------------------------------------------------------------------
-class SbotSniffBinCommand(sublime_plugin.TextCommand):
-    ''' Reports non-ascii characters in the view.'''
+# #-----------------------------------------------------------------------------------
+# class SbotSniffBinCommand(sublime_plugin.TextCommand):
+#     ''' Reports non-ascii characters in the view.'''
 
-    def run(self, edit):
-        # This only works on text/view regions so is string-centric.
+#     def run(self, edit):
+#         # This only works on text/view regions so is string-centric.
 
-        # TODO args/settings.
-        op = 'xlat' # or 'inst'
-        limit = 100
+#         # TODO args/settings.
+#         op = 'xlat' # or 'inst'
+#         limit = 100
 
-        # Expected binary chars.
-        exp = { '\0':'<<NUL>>', '\n':'<<LF>>', '\r':'<<CR>>', '\t':'<<TAB>>', '\033':'<<ESC>>' }
+#         # Expected binary chars.
+#         exp = { '\0':'<<NUL>>', '\n':'<<LF>>', '\r':'<<CR>>', '\t':'<<TAB>>', '\033':'<<ESC>>' }
 
-        pos = 0
-        regnum = 0
-        buff = []
+#         pos = 0
+#         regnum = 0
+#         buff = []
 
-        # Iterate user selections.
-        for region in sc.get_sel_regions(self.view):
-            if op == 'xlat':
-                buff = [f'===== Translation Region {regnum} =====\n']
-            else:
-                buff = [f'===== Instances Region {regnum} =====\n']
+#         # Iterate user selections.
+#         for region in sc.get_sel_regions(self.view):
+#             if op == 'xlat':
+#                 buff = [f'===== Translation Region {regnum} =====\n']
+#             else:
+#                 buff = [f'===== Instances Region {regnum} =====\n']
 
-            # Iterate lines in selection.
-            line_num = 1
-            for line_reg in self.view.split_by_newlines(region):
-                col_num = 1
+#             # Iterate lines in selection.
+#             line_num = 1
+#             for line_reg in self.view.split_by_newlines(region):
+#                 col_num = 1
 
-                # Examine each line.
-                text = self.view.substr(line_reg)
-                for ch in text:
-                    if op == 'xlat':
-                        if ch >= ' ' and ch <= '~': # ascii printable
-                            buff.append(ch)
-                        elif ch in exp:
-                            buff.append(exp[ch])
-                        else: # Everything else is binary.
-                            buff.append(f'<<0x{ord(ch):04x}>>')
-                            limit -= 1
+#                 # Examine each line.
+#                 text = self.view.substr(line_reg)
+#                 for ch in text:
+#                     if op == 'xlat':
+#                         if ch >= ' ' and ch <= '~': # ascii printable
+#                             buff.append(ch)
+#                         elif ch in exp:
+#                             buff.append(exp[ch])
+#                         else: # Everything else is binary.
+#                             buff.append(f'<<0x{ord(ch):04x}>>')
+#                             limit -= 1
 
-                    else:
-                        if ch >= ' ' and ch <= '~': # ascii printable
-                            pass
-                        elif ch in exp:
-                            pass
-                        else: # Everything else is binary.
-                            buff.append(f'line:{line_num} col:{col_num} val:0x{ord(ch):04x}\n')
-                            limit -= 1
+#                     else:
+#                         if ch >= ' ' and ch <= '~': # ascii printable
+#                             pass
+#                         elif ch in exp:
+#                             pass
+#                         else: # Everything else is binary.
+#                             buff.append(f'line:{line_num} col:{col_num} val:0x{ord(ch):04x}\n')
+#                             limit -= 1
 
-                    col_num += 1
-                    pos += 1
+#                     col_num += 1
+#                     pos += 1
 
-                line_num += 1
+#                 line_num += 1
 
-                if op == 'xlat':
-                    buff.append('\n')
+#                 if op == 'xlat':
+#                     buff.append('\n')
 
-                if limit <= 0:
-                    break
+#                 if limit <= 0:
+#                     break
 
-        sc.create_new_view(self.view.window(), "".join(buff))
+#         sc.create_new_view(self.view.window(), "".join(buff))
 
 
 #-----------------------------------------------------------------------------------
