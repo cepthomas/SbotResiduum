@@ -1,4 +1,16 @@
 {
     // Number of spaces for a tab.
     "tab_size": 4,
+
+    // xxx
+   "limit for instances etc": 100,
+
+    // xxx
+   "limit other?": 100000,
+
+    // xxx
+   "delims": ["<<", ">>"],
+
+    // xxx  NUL, ESC,
+   "colors": { "0": "markup.user_hl3", "27": "reddish" }
 }

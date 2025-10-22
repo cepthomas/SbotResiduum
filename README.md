@@ -23,7 +23,6 @@ Supported menu type is <b>C</b>ontext, <b>S</b>idebar, <b>T</b>ab.
 | sbot_run                | C S  | Runs executable or opens other types.                     |               |
 | sbot_terminal           | C S  | Open a terminal here.                                     | S: paths: []  |
 | sbot_tree               | C S  | Run tree cmd to new view.                                 | S: paths: []  |
-| sbot_sniff_bin          | C S  | Locate binary chars in ascii view.                        |               |
 | sbot_open_context_path  | C    | Open path under cursor like `[opt tag](C:\my\file.txt)`   |               |
 | sbot_insert_line_indexes| C    | Insert line numbers at beginning of line                  |               |
 | sbot_trim               | C    | Remove ws from Line ends.                                 | how: leading OR trailing OR both |
@@ -32,6 +31,12 @@ Supported menu type is <b>C</b>ontext, <b>S</b>idebar, <b>T</b>ab.
 | sbot_format_json        | C    | Simple json formatter. Converts comments to json elements |               |
 | sbot_format_xml         | C    | Simple xml formatter.                                     |               |
 | sbot_format_cx_src      | C    | Simple C/C++/C# formatter. Uses AStyle.                   |               |
+
+
+| TODO1 add               |      |               |
+| :--------               | :--- | :------------                                             | :-------      |
+| sbot_sniff_bin          | C S  | Locate binary chars in ascii view.                        |               |
+
 
 
 There are no default `Context/Tab/Side Bar.sublime-menu` files in this plugin.
@@ -45,7 +50,7 @@ Add the ones you like to your own `Context/Tab/Side Bar.sublime-menu` files. Typ
 { "caption": "Run", "command": "sbot_run" },
 { "caption": "Terminal Here", "command": "sbot_terminal" },
 { "caption": "Tree", "command": "sbot_tree" },
-{ "caption": "Sniff Bin", "command": "sbot_sniff_bin" },
+xxxxxxx { "caption": "Sniff Bin", "command": "sbot_sniff_bin" },
 { "caption": "Trim Leading WS", "command": "sbot_trim", "args" : {"how" : "leading"}  },
 { "caption": "Trim Trailing WS", "command": "sbot_trim", "args" : {"how" : "trailing"}  },
 { "caption": "Trim WS", "command": "sbot_trim", "args" : {"how" : "both"}  },
@@ -65,7 +70,7 @@ Add the ones you like to your own `Context/Tab/Side Bar.sublime-menu` files. Typ
 
 | Setting            | Description         | Options                                     |
 | :--------          | :-------            | :------                                     |
-| tab_size           | Spaces per tab      | Currently applies to all file types         |
+| format_tab_size    | Spaces per tab      | Currently applies to all file types         |
 
 
 Right click stuff works best with this global setting:
