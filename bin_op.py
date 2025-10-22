@@ -35,18 +35,12 @@ from . import sbot_common as sc
 #   insert/edit unicode from glyph picker [bin -> insert?] C (view)
 #
 # Tools on files:
-#   find/replace unicodes value(s) -> value(s) [or just open view and do there]
-#   fix/show/analyze line ends? [bin -> line_ends] S (file)  like C# SniffBin?
+#   ? find/replace unicodes value(s) -> value(s) [or just open view and do there]
+#   ? fix/show/analyze line ends? [bin -> line_ends] S (file)  like C# SniffBin?
 #
-# optargs: how???
-#   start/end addr
-#   output to terminal w/more etc,
-# 
-# settings:
-#   limit for instances etc = 100
-#   limit other? = 100000
-#   delims = ["<<", ">>"]
-#   colors = { "0": "markup.user_hl3", "27": "reddish" } // NUL  ESC
+# optargs: how?
+#   ? start/end addr
+#   ? output to terminal w/more etc instead of view - setting?
 
 
 #-----------------------------------------------------------------------------------
@@ -64,32 +58,16 @@ def plugin_unloaded():
 
 
 
-#-----------------------------------------------------------------------------------
-class BinXxxWindowCommand(sublime_plugin.WindowCommand):
-    '''
-    Open term in this directory.
-    Supports context and sidebar menus.
-    '''
-    def run(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
-        if dir is not None:
-            sc.open_terminal(dir)
-
-    def is_visible(self, paths=None):
-        dir, fn, path = sc.get_path_parts(self.window, paths)
-        return dir is not None
-
-
-
-
-
-
 
 #-----------------------------------------------------------------------------------
-class BinXxxCommand(sublime_plugin.TextCommand):
+class BinOpCommand(sublime_plugin.TextCommand):
 
-    def run(self, edit): #, arg...
+    def run(self, edit, op_type):
         # This only works on text/view regions so is string-centric.
+
+#       'translate' to new view (doesn't help with line ends) [bin -> translate] C (view) or S (file) :: colorize unicode/bin
+#       'instances' to new view (ditto) [bin -> instances] C (view) or S (file)
+#       'hex' to new view (ditto) [bin -> hex] C (view) or S (file) :: colorize unicode/bin
 
         # TODO args/settings.
         op = 'xlat' # or 'inst'
@@ -100,15 +78,20 @@ class BinXxxCommand(sublime_plugin.TextCommand):
 class SbotSniffBinCommand(sublime_plugin.TextCommand):
     ''' Reports non-ascii characters in the view.'''
 
-    def run(self, edit):
-        # This only works on text/view regions so is string-centric.
+    def run(self, edit, op_type):
+        del edit
+        err = False
 
-        # TODO args/settings.
-        op = 'xlat' # or 'inst'
-        limit = 100
+        settings = sublime.load_settings(sc.get_settings_fn())
+        tab_size = settings.get('format_tab_size')
+        instance_limit = settings.get('instance_limit')
+        translate_delims = settings.get('translate_delims')
+        bin_colors = settings.get('bin_colors')
+
+
 
         # Expected binary chars.
-        exp = { '\0':'<<NUL>>', '\n':'<<LF>>', '\r':'<<CR>>', '\t':'<<TAB>>', '\033':'<<ESC>>' }
+        # exp = { '\0':'<<NUL>>', '\n':'<<LF>>', '\r':'<<CR>>', '\t':'<<TAB>>', '\033':'<<ESC>>' }
 
         pos = 0
         regnum = 0
