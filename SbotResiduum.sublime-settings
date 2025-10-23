@@ -1,16 +1,18 @@
 {
+    ///// clean /////
     // Number of spaces for a tab.
     "format_tab_size": 4,
 
-    // xxx
-   "instance_limit": 100,
+    ///// binstr /////
+    // Limit results for instance.
+    "instance_limit": 100,
 
-    // TODO?
-   "other_limit": 100000,
+    // "other_limit": 100000,
 
-    // xxx
-   "translate_delims": ["<<", ">>"],
+    // Ids for binaries.
+    "translate_delims": ["<<", ">>"],
 
     // xxx  NUL, ESC,
-   "bin_colors": { "0": "markup.user_hl3", "27": "reddish" }
+    "bin_color": "comment",
+    "unicode_color": "variable",
 }

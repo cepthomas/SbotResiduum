@@ -33,7 +33,7 @@ Supported menu type is <b>C</b>ontext, <b>S</b>idebar, <b>T</b>ab.
 | sbot_format_cx_src      | C    | Simple C/C++/C# formatter. Uses AStyle.                   |               |
 
 
-| TODO1 add               |      |               |
+| TODO1 add  binstr       |      |               |
 | :--------               | :--- | :------------                                             | :-------      |
 | sbot_sniff_bin          | C S  | Locate binary chars in ascii view.                        |               |
 

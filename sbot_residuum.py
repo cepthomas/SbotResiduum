@@ -5,21 +5,9 @@ import shutil
 import string
 import re
 import enum
-import json
-import xml
-import xml.dom.minidom
 import sublime
 import sublime_plugin
 from . import sbot_common as sc
-
-
-# Syntax defs.
-SYNTAX_C = 'Packages/C++/C.sublime-syntax'
-SYNTAX_CPP = 'Packages/C++/C++.sublime-syntax'
-SYNTAX_CS = 'Packages/C#/C#.sublime-syntax'
-SYNTAX_XML = 'Packages/XML/XML.sublime-syntax'
-SYNTAX_LUA = 'Packages/Lua/Lua.sublime-syntax'
-SYNTAX_JSON = 'Packages/JSON/JSON.sublime-syntax'
 
 
 #-----------------------------------------------------------------------------------
