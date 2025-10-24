@@ -12,7 +12,9 @@
     // Ids for binaries.
     "translate_delims": ["<<", ">>"],
 
-    // xxx  NUL, ESC,
-    "bin_color": "comment",
-    "unicode_color": "variable",
+    // One byte values.
+    "color_ascii": "comment",
+
+    // Multi byte values.
+    "color_unicode": "variable",
 }

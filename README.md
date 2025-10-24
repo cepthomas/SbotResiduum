@@ -33,9 +33,27 @@ Supported menu type is <b>C</b>ontext, <b>S</b>idebar, <b>T</b>ab.
 | sbot_format_cx_src      | C    | Simple C/C++/C# formatter. Uses AStyle.                   |               |
 
 
-| TODO1 add  binstr       |      |               |
+| TODO1 add  sbot_bin       |      |               |
 | :--------               | :--- | :------------                                             | :-------      |
 | sbot_sniff_bin          | C S  | Locate binary chars in ascii view.                        |               |
+
+Tools on views C (view):
+  op:'translate' to new view (doesn't help with line ends) [bin -> translate] :: colorize unicode/bin
+  op:'instance' to new view (ditto) [bin -> instance]
+  op:'hex' to new view (ditto) [bin -> hex] :: colorize unicode/bin
+  ? find/replace - just use native ST in View [NA]
+  insert/edit unicode from numerical/clipboard/region (dec/hex) [bin -> insert?]
+  insert/edit unicode from glyph picker [bin -> insert?]
+
+Tools on files S (file):
+  dump hex
+  ? find/replace unicodes value(s) -> value(s) [or just open view and do there]
+  ? fix/show/analyze line ends? [bin -> line_ends]  like CSniffBin?
+
+optargs: how?
+  ? start/end addr
+  ? output to terminal w/more etc instead of view - setting?
+
 
 
 
