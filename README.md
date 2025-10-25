@@ -9,7 +9,7 @@ Built for ST4 on Windows. Linux and OSX should be ok but are not tested - PRs we
 # Commands
 
 `sbot_residuum.py` is a sandard ST plugin with a variety of commands that process text, simplify ST internals,
-interact with the OS, etc. Displays absolute text position in status bar next to row/col.
+interact with the OS, process binary/unicode content, etc. Displays absolute text position in status bar next to row/col.
 
 Supported menu type is <b>C</b>ontext, <b>S</b>idebar, <b>T</b>ab.
 
@@ -31,34 +31,14 @@ Supported menu type is <b>C</b>ontext, <b>S</b>idebar, <b>T</b>ab.
 | sbot_format_json        | C    | Simple json formatter. Converts comments to json elements |               |
 | sbot_format_xml         | C    | Simple xml formatter.                                     |               |
 | sbot_format_cx_src      | C    | Simple C/C++/C# formatter. Uses AStyle.                   |               |
-
-
-| TODO1 add  sbot_bin       |      |               |
-| :--------               | :--- | :------------                                             | :-------      |
-| sbot_sniff_bin          | C S  | Locate binary chars in ascii view.                        |               |
-
-Tools on views C (view):
-  op:'translate' to new view (doesn't help with line ends) [bin -> translate] :: colorize unicode/bin
-  op:'instance' to new view (ditto) [bin -> instance]
-  op:'hex' to new view (ditto) [bin -> hex] :: colorize unicode/bin
-  ? find/replace - just use native ST in View [NA]
-  insert/edit unicode from numerical/clipboard/region (dec/hex) [bin -> insert?]
-  insert/edit unicode from glyph picker [bin -> insert?]
-
-Tools on files S (file):
-  dump hex
-  ? find/replace unicodes value(s) -> value(s) [or just open view and do there]
-  ? fix/show/analyze line ends? [bin -> line_ends]  like CSniffBin?
-
-optargs: how?
-  ? start/end addr
-  ? output to terminal w/more etc instead of view - setting?
+| sbot_bin_translate      | C    | Current view with all binary and unicode expanded.        |               |
+| sbot_bin_instance       | C    | List of all binary and unicode in current view.           |               |
+| sbot_bin_dump           | S    | Hex dump of selected file with binary values colored.     | S: paths: []  |
 
 
 
-
-There are no default `Context/Tab/Side Bar.sublime-menu` files in this plugin.
-Add the ones you like to your own `Context/Tab/Side Bar.sublime-menu` files. Typical entries are:
+There are no default `.sublime-menu` files in this plugin.
+Add the ones you like to your own menu files. Typical entries are:
 ``` json
 { "caption": "Copy Name", "command": "sbot_copy_name"},
 { "caption": "Copy Path", "command": "sbot_copy_path"},
@@ -68,7 +48,6 @@ Add the ones you like to your own `Context/Tab/Side Bar.sublime-menu` files. Typ
 { "caption": "Run", "command": "sbot_run" },
 { "caption": "Terminal Here", "command": "sbot_terminal" },
 { "caption": "Tree", "command": "sbot_tree" },
-xxxxxxx { "caption": "Sniff Bin", "command": "sbot_sniff_bin" },
 { "caption": "Trim Leading WS", "command": "sbot_trim", "args" : {"how" : "leading"}  },
 { "caption": "Trim Trailing WS", "command": "sbot_trim", "args" : {"how" : "trailing"}  },
 { "caption": "Trim WS", "command": "sbot_trim", "args" : {"how" : "both"}  },
@@ -81,14 +60,20 @@ xxxxxxx { "caption": "Sniff Bin", "command": "sbot_sniff_bin" },
 { "caption": "Format C/C++/C#", "command": "sbot_format_cx_src" },
 { "caption": "Format json", "command": "sbot_format_json" },
 { "caption": "Format xml", "command": "sbot_format_xml" },
+{ "caption": "Bin Translate", "command": "sbot_bin_translate" },
+{ "caption": "Bin Instance", "command": "sbot_bin_instance" },
+{ "caption": "Bin Dump", "command": "sbot_bin_dump", "args": {"paths": []} },
 ```
-
 
 # Settings
 
-| Setting            | Description         | Options                                     |
-| :--------          | :-------            | :------                                     |
-| format_tab_size    | Spaces per tab      | Currently applies to all file types         |
+| Setting            | Description                  | Options                     |
+| :--------          | :-------                     | :------                     |
+| format_tab_size    | Spaces per tab               | Default = 4                 |
+| instance_limit     | Limit results for instance.  | Default = 100               |
+| translate_delims   | Ids for binaries             | Default = ["<<", ">>"]      |
+| color_ascii        | One byte values              | Default = scope "comment"   |
+| color_unicode      | Multi byte values            | Default = scope "variable"  |
 
 
 Right click stuff works best with this global setting:

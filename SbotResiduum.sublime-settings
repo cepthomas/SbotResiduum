@@ -7,8 +7,6 @@
     // Limit results for instance.
     "instance_limit": 100,
 
-    // "other_limit": 100000,
-
     // Ids for binaries.
     "translate_delims": ["<<", ">>"],
 

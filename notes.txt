@@ -1,3 +1,25 @@
+Put cmd in UTF-8 mode: `chcp 65001`.
+
+
+
+# https://en.wikipedia.org/wiki/UTF-8
+# Convert codepoint to memory bytes
+# UTF-8 encodes code points in one to four bytes, depending on the value of the code point. In the following table,
+# the characters u to z are replaced by the bits of the code point, from the positions U+uvwxyz:
+#     First CP  Last CP   Byte 1    Byte 2    Byte 3    Byte 4
+#     U+0000    U+007F    0yyyzzzz
+#     U+0080    U+07FF    110xxxyy  10yyzzzz
+#     U+0800    U+FFFF    1110wwww  10xxxxyy  10yyzzzz
+#     U+010000  U+10FFFF  11110uvv  10vvwwww  10xxxxyy  10yyzzzz
+
+
+Font              Ligatures  Powerline Glyphs
+Cascadia Code     Yes        No
+Cascadia Mono     No         No
+Cascadia Code PL  Yes        Yes
+Cascadia Mono PL  No         Yes
+
+
 Dec  Hex  Binary      HTML      Char    Description
 ---  ---  ------      ----      ----    -----------
 0    00   00000000    &#0;      NUL     Null
