@@ -4,10 +4,8 @@ import sublime_plugin
 from . import sbot_common as sc
 
 
-# TODO Handle multiple regions?
 # TODO Insert/edit unicode from numerical/clipboard/region or from glyph picker.
-# TODO Option: start/end addr.
-# TODO Find/replace unicode values (line ends) (or just open file in view and do there).
+# TODO Option: addr, length.
 
 
 # Expected/common binary chars.
@@ -135,15 +133,25 @@ class SbotBinInstanceCommand(sublime_plugin.TextCommand):
 
 #-----------------------------------------------------------------------------------
 class SbotBinDumpCommand(sublime_plugin.WindowCommand):
-    ''' zzz.'''
-    def run(self, paths=None):
-        ''' zzz.'''
+
+    start_addr = 0
+    read_rows = 0 # num to read or 0 for all
+    last_input = ''
+
+
+    def on_done(self, text):
+        sc.create_new_view(self.window, text)
+
+
+
+    def run(self, paths, sel_addr_range):
         _, _, path = sc.get_path_parts(self.window, paths)
 
         buff = []
         regions_ascii = []
         regions_unicode = []
         out_pos = 0
+        file_row = 0 # offset in file
 
         settings = sublime.load_settings(sc.get_settings_fn())
         color_ascii = str(settings.get('color_ascii'))
@@ -153,10 +161,12 @@ class SbotBinDumpCommand(sublime_plugin.WindowCommand):
         READ_ROWS = 256 # per block
         BLOCK_SIZE = READ_ROWS * ROW_SIZE
 
-        file_row = 0 # offset in file
+        if sel_addr_range:
+            self.window.show_input_panel('start-address [length] >', self.last_input, self.on_done, None, None)
 
         with open(str(path), 'rb') as f:
             eof = False
+            f.seek(self.start_addr)
 
             while not eof:
                 bytes_read = f.read(BLOCK_SIZE)

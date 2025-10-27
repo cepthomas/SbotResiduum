@@ -78,7 +78,7 @@ class SbotDeleteFileCommand(sublime_plugin.WindowCommand):
     Delete the file in the current view.
     Supports context and tab menus.
     '''
-    def run(self):  # , paths=None):
+    def run(self):
         _, fn, path = sc.get_path_parts(self.window, None)
         if fn is not None:
             self.window.run_command("delete_file", {"files": [path], "prompt": False})

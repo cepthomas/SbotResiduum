@@ -13,27 +13,27 @@ interact with the OS, process binary/unicode content, etc. Displays absolute tex
 
 Supported menu type is <b>C</b>ontext, <b>S</b>idebar, <b>T</b>ab.
 
-| Command                 | Menu | Description                                               | Args          |
-| :--------               | :--- | :------------                                             | :-------      |
-| sbot_split_view         | C S  | Toggle simple split view like VS, Word etc.               |               |
-| sbot_copy_name          | S T  | Copy file/dir name to clipboard.                          | S: paths: []  |
-| sbot_copy_path          | S T  | Copy full file/dir path to clipboard.                     | S: paths: []  |
-| sbot_copy_file          | S T  | Copy selected file to a new file in the same directory.   | S: paths: []  |
-| sbot_delete_file        | C T  | Moves the file in current view to recycle/trash bin.      |               |
-| sbot_run                | C S  | Runs executable or opens other types.                     |               |
-| sbot_terminal           | C S  | Open a terminal here.                                     | S: paths: []  |
-| sbot_tree               | C S  | Run tree cmd to new view.                                 | S: paths: []  |
-| sbot_open_context_path  | C    | Open path under cursor like `[opt tag](C:\my\file.txt)`   |               |
-| sbot_insert_line_indexes| C    | Insert line numbers at beginning of line                  |               |
-| sbot_trim               | C    | Remove ws from Line ends.                                 | how: leading OR trailing OR both |
-| sbot_remove_empty_lines | C    | Like it says.                                             | how: remove_all OR normalize ( to one) |
-| sbot_remove_ws          | C    | Like it says.                                             | how: remove_all OR keep_eol OR normalize (to one) |
-| sbot_format_json        | C    | Simple json formatter. Converts comments to json elements |               |
-| sbot_format_xml         | C    | Simple xml formatter.                                     |               |
-| sbot_format_cx_src      | C    | Simple C/C++/C# formatter. Uses AStyle.                   |               |
-| sbot_bin_translate      | C    | Current view with all binary and unicode expanded.        |               |
-| sbot_bin_instance       | C    | List of all binary and unicode in current view.           |               |
-| sbot_bin_dump           | S    | Hex dump of selected file with binary values colored.     | S: paths: []  |
+| Command                 | Menu | Description                                                | Args          |
+| :--------               | :--- | :------------                                              | :-------      |
+| sbot_split_view         | C S  | Toggle simple split view like VS, Word etc.                |               |
+| sbot_copy_name          | S T  | Copy file/dir name to clipboard.                           | S: paths:[]   |
+| sbot_copy_path          | S T  | Copy full file/dir path to clipboard.                      | S: paths:[]   |
+| sbot_copy_file          | S T  | Copy selected file to a new file in the same directory.    | S: paths:[]   |
+| sbot_delete_file        | C T  | Moves the file in current view to recycle/trash bin.       |               |
+| sbot_run                | C S  | Runs executable or opens other types.                      |               |
+| sbot_terminal           | C S  | Open a terminal here.                                      | S: paths:[]   |
+| sbot_tree               | C S  | Run tree cmd to new view.                                  | S: paths:[]   |
+| sbot_open_context_path  | C    | Open path under cursor like `[opt tag](C:\my\file.txt)`    |               |
+| sbot_insert_line_indexes| C    | Insert line numbers at beginning of line                   |               |
+| sbot_trim               | C    | Remove ws from Line ends.                                  | how: leading OR trailing OR both |
+| sbot_remove_empty_lines | C    | Like it says.                                              | how: remove_all OR normalize ( to one) |
+| sbot_remove_ws          | C    | Like it says.                                              | how: remove_all OR keep_eol OR normalize (to one) |
+| sbot_format_json        | C    | Simple json formatter. Converts comments to json elements. |               |
+| sbot_format_xml         | C    | Simple xml formatter.                                      |               |
+| sbot_format_cx_src      | C    | Simple C/C++/C# formatter. Uses AStyle.                    |               |
+| sbot_bin_translate      | C    | Current view/selection with all binary/unicode expanded.   |               |
+| sbot_bin_instance       | C    | List of all binary/unicode in current view.                |               |
+| sbot_bin_dump           | S    | Hex dump of selected file with binary colored.             | S: paths:[] sel_addr_range:T/F   |
 
 
 
