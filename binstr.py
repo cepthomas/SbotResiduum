@@ -84,7 +84,7 @@ class SbotBinInstanceCommand(sublime_plugin.TextCommand):
         del edit
 
         settings = sublime.load_settings(sc.get_settings_fn())
-        instance_limit = int(settings.get('instance_limit'))   # pyright: ignore
+        output_limit = int(settings.get('output_limit'))   # pyright: ignore
         color_ascii = str(settings.get('color_ascii'))
         color_unicode = str(settings.get('color_unicode'))
 
@@ -106,24 +106,21 @@ class SbotBinInstanceCommand(sublime_plugin.TextCommand):
             for ch in text:
                 if ch >= ' ' and ch <= '~': # ascii printable
                     pass
-
                 elif ch in com_bin:
                     buff.append(f'line:{line_num} col:{col_num} val:{com_bin[ch]}\n')
-
                 else: # Everything else is binary of interest.
-
                     if ch < ' ':
                         buff.append(f'line:{line_num} col:{col_num} val:0x{ord(ch):02X}\n')
                     else:
                         buff.append(f'line:{line_num} col:{col_num} val:U+{ord(ch):02X}\n')
-
-                    instance_limit -= 1
+                    output_limit -= 1
 
                 col_num += 1
                 in_pos += 1
 
             line_num += 1
-            if instance_limit <= 0:
+            if output_limit <= 0:
+                buff.append(f'===== Truncated =====\n')
                 break
 
         new_view = sc.create_new_view(self.view.window(), ''.join(buff))
@@ -140,8 +137,8 @@ class SbotBinDumpCommand(sublime_plugin.WindowCommand):
 
     def run(self, paths, sel_addr_range):
 
-        def on_done(input_string):
-            self.last_input = input_string
+        def on_done(text):
+            self.last_input = text
 
             # Check user entry.
             if self.start_addr < 0:
@@ -149,73 +146,75 @@ class SbotBinDumpCommand(sublime_plugin.WindowCommand):
                 return
 
             ROW_SIZE = 16
-            ROWS_PER_BLOCK = 256 # per block
-            BLOCK_SIZE = ROWS_PER_BLOCK * ROW_SIZE
+            # ROWS_PER_BLOCK = 256 # per block
+            # BLOCK_SIZE = ROWS_PER_BLOCK * ROW_SIZE
 
             _, _, path = sc.get_path_parts(self.window, paths)
 
             buff = []
             regions_ascii = []
             regions_unicode = []
-            out_pos = 0
-            file_row = 0 # offset in file
+            out_pos = 0 # byte position for capturing regions
+            file_row = 0 # offset in input file
 
             settings = sublime.load_settings(sc.get_settings_fn())
             color_ascii = str(settings.get('color_ascii'))
             color_unicode = str(settings.get('color_unicode'))
+            output_limit = int(settings.get('output_limit'))   # pyright: ignore
 
             with open(str(path), 'rb') as f:
                 eof = False
                 f.seek(self.start_addr)
 
                 while not eof:
-                    bytes_read = f.read(BLOCK_SIZE)
-                    blen = len(bytes_read)
-                    eof = blen < BLOCK_SIZE
+                    bytes_read = f.read(ROW_SIZE)
+                    row_len = len(bytes_read)
+                    eof = row_len < ROW_SIZE
 
-                    # Process new array.
-                    num_rows = blen // ROW_SIZE + 1 if eof else 0
-                    last_row_len = blen % ROW_SIZE
+                    ### Process row.
 
-                    # Process block rows.
-                    for row_num in range(0, num_rows):
-                        row_len = last_row_len if eof and row_num == num_rows-1 else ROW_SIZE
-                        if row_len == 0: continue
+                    # Address.
+                    row_addr = file_row * ROW_SIZE + self.start_addr
+                    srow = [f'0x{row_addr:04X}']
+                    out_pos += 7
+                    readable = ['    ']
 
-                        row_addr = file_row * ROW_SIZE + self.start_addr
-                        srow = [f'0x{row_addr:04X}']
-                        out_pos += 7
-                        info = ['    ']
+                    # Byte values.
+                    for i in range(0, row_len):
+                        st_pos = out_pos
+                        v = bytes_read[i]
+                        srow.append(f' {v:02X}')
+                        out_pos += 3
 
-                        for i in range(0, row_len):
-                            st_pos = out_pos
-                            v = bytes_read[row_num * ROW_SIZE + i]
-                            srow.append(f' {v:02X}')
-                            out_pos += 3
+                        if v >= 32 and v <= 126: # ascii printable
+                            readable.append(chr(v))
+                        elif v < 32 or v == 127: # ascii control
+                            regions_ascii.append(sublime.Region(st_pos, out_pos-1)) # color range
+                            readable.append(' ')
+                        else: # Unicode byte.
+                            regions_unicode.append(sublime.Region(st_pos, out_pos-1)) # color range
+                            readable.append(' ')
 
-                            if v >= 32 and v <= 126: # ascii printable
-                                info.append(chr(v))
+                    # Maybe pad last.
+                    for i in range(row_len, ROW_SIZE):
+                        srow.append(f' ..')
+                        out_pos += 3
 
-                            elif v < 32 or v == 127: # ascii control
-                                regions_ascii.append(sublime.Region(st_pos, out_pos-1)) # color range
-                                info.append(' ')
+                    # Tack on readable.
+                    sreadable = (''.join(readable))
+                    srow.append(sreadable)
+                    out_pos += len(sreadable)
 
-                            else: # Unicode byte.
-                                regions_unicode.append(sublime.Region(st_pos, out_pos-1)) # color range
-                                info.append(' ')
+                    # Row done.
+                    srow.append('\n')
+                    buff.append(''.join(srow))
+                    file_row += 1
+                    output_limit -= 1
 
-                        # Maybe pad last.
-                        for i in range(row_len, ROW_SIZE):
-                            srow.append(f' ..')
-                            out_pos += 3
-
-                        # Row done.
-                        sinfo = (''.join(info))
-                        srow.append(sinfo)
-                        out_pos += len(sinfo)
-                        srow.append('\n')
-                        buff.append(''.join(srow))
-                        file_row += 1
+                    if output_limit <= 0:
+                        buff.append(f'====================== Truncated =====================\n')
+                        eof = True
+                        break
 
             new_view = sc.create_new_view(self.window, ''.join(buff))
             new_view.add_regions(key='regions_ascii', regions=regions_ascii, scope=color_ascii)
@@ -224,7 +223,8 @@ class SbotBinDumpCommand(sublime_plugin.WindowCommand):
         def on_cancel():
             print("User cancelled the input")
 
-        # Start here...
+        # ===== Start here... =====
+
         # User options?
         start_addr = 0
         read_rows = 0
@@ -287,7 +287,7 @@ class SbotBinDumpCommand_o(sublime_plugin.WindowCommand):
                     row_addr = file_row * ROW_SIZE + self.start_addr
                     srow = [f'0x{row_addr:04X}']
                     out_pos += 7
-                    info = ['    ']
+                    readable = ['    ']
 
                     for i in range(0, row_len):
                         st_pos = out_pos

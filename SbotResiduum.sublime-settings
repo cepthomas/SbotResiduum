@@ -4,8 +4,8 @@
     "format_tab_size": 4,
 
     ///// binstr /////
-    // Limit results for instance.
-    "instance_limit": 100,
+    // Limit results.
+    "output_limit": 500,
 
     // Ids for binaries.
     "translate_delims": ["<<", ">>"],

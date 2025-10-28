@@ -69,11 +69,11 @@ Add the ones you like to your own menu files. Typical entries are:
 
 | Setting            | Description                  | Options                     |
 | :--------          | :-------                     | :------                     |
-| format_tab_size    | Spaces per tab               | Default = 4                 |
-| instance_limit     | Limit results for instance.  | Default = 100               |
-| translate_delims   | Ids for binaries             | Default = ["<<", ">>"]      |
-| color_ascii        | One byte values              | Default = scope "comment"   |
-| color_unicode      | Multi byte values            | Default = scope "variable"  |
+| format_tab_size    | Spaces per tab.              | Default = 4                 |
+| output_limit       | Limit output results.        | Default = 500  0 = none     |
+| translate_delims   | Marks for binaries.          | Default = ["<<", ">>"]      |
+| color_ascii        | One byte values.             | Default = scope "comment"   |
+| color_unicode      | Multi byte values.           | Default = scope "variable"  |
 
 
 Right click stuff works best with this global setting:
