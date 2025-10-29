@@ -33,7 +33,7 @@ Supported menu type is <b>C</b>ontext, <b>S</b>idebar, <b>T</b>ab.
 | sbot_format_cx_src      | C    | Simple C/C++/C# formatter. Uses AStyle.                    |               |
 | sbot_bin_translate      | C    | Current view/selection with all binary/unicode expanded.   |               |
 | sbot_bin_instance       | C    | List of all binary/unicode in current view.                |               |
-| sbot_bin_dump           | S    | Hex dump of selected file with binary colored.             | S: paths:[] sel_addr_range:T/F   |
+| sbot_bin_dump           | S    | Hex dump of selected file with colored binary.             | S: paths:[] sel_addr_range:T/F   |
 
 
 

@@ -8,7 +8,7 @@
     "output_limit": 500,
 
     // Ids for binaries.
-    "translate_delims": ["<<", ">>"],
+    "translate_delims": ["|", "|"],
 
     // One byte values.
     "color_ascii": "comment",
