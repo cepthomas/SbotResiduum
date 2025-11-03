@@ -1,4 +1,7 @@
 {
+    ///// misc /////
+    "tree_unicode": false,
+
     ///// clean /////
     // Number of spaces for a tab.
     "format_tab_size": 4,

@@ -113,10 +113,24 @@ class SbotTreeCommand(sublime_plugin.WindowCommand):
         dir, _, _ = sc.get_path_parts(self.window, paths)
 
         try:
-            # Try treex first.
-            cmd = f'treex -c "{dir}"' if shutil.which("treex") else f'tree "{dir}" /a /f'
+            # Try treex first. treex [-c] [-f] [-d N] [-s] [-?] [-e fld 1,fld2,...] [-i fld1,fld2,...] [dir]")
+            #   dir: start folder or current if missing
+            #   -c: color output (default is off=monochrome)
+            #   -u: unicode output otherwise ascii (default is ascii)
+            #   -d num: maxDepth (default is 0 which means all)
+            #   -f: show files (default is just dirs)
+            #   -s: show file size (default is false)
+
+            cmd = f'treex "{dir}"' if shutil.which("treex") else f'tree "{dir}" /a /f'
             cp = subprocess.run(cmd, universal_newlines=True, capture_output=True, shell=True, check=True)
-            sc.create_new_view(self.window, cp.stdout)
+
+            # Note that unicode is not handled as you would expect on windows:
+            # https://github.com/python/cpython/issues/105312
+            # TODO Workaround for now for Notr: 
+            settings = sublime.load_settings(sc.get_settings_fn())
+            tree_unicode = settings.get('tree_unicode')
+            sout = cp.stdout.replace('+---', '├── ').replace(R'\---', '└── ').replace('|   ', '│   ') if tree_unicode else cp.stdout
+            sc.create_new_view(self.window, sout)
         except Exception as e:
             sc.create_new_view(self.window, f'Well, that did not go well: {e} {e.__traceback__}')
 
