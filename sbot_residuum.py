@@ -207,3 +207,22 @@ class SbotTerminalCommand(sublime_plugin.WindowCommand):
         return dir is not None
 
 
+#-----------------------------------------------------------------------------------
+class SbotInsertLineIndexesCommand(sublime_plugin.TextCommand):
+    ''' Insert sequential numbers in first column. Default is to start at 1. '''
+
+    def run(self, edit):
+        # Iterate lines.
+        line_count = self.view.rowcol(self.view.size())[0]
+        width = len(str(line_count))
+        offset = 0
+
+        for region in sc.get_sel_regions(self.view):
+            line_num = 1
+            offset = 0
+            for line_region in self.view.split_by_newlines(region):
+                s = f'{line_num:0{width}} '
+                self.view.insert(edit, line_region.a + offset, s)
+                line_num += 1
+                # Adjust for inserts.
+                offset += width + 1
