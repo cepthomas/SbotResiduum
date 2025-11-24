@@ -126,7 +126,7 @@ class SbotTreeCommand(sublime_plugin.WindowCommand):
 
             # Note that unicode is not handled as you would expect on windows:
             # https://github.com/python/cpython/issues/105312
-            # TODO Workaround for now for Notr: 
+            # TODO Workaround for now for Notr - exec processes handle unicode improperly.: 
             settings = sublime.load_settings(sc.get_settings_fn())
             tree_unicode = settings.get('tree_unicode')
             sout = cp.stdout.replace('+---', '├── ').replace(R'\---', '└── ').replace('|   ', '│   ') if tree_unicode else cp.stdout
