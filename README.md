@@ -23,7 +23,7 @@ Supported menu type is <b>C</b>ontext, <b>S</b>idebar, <b>T</b>ab.
 | sbot_run                | C S  | Runs executable or opens other types.                      |               |
 | sbot_terminal           | C S  | Open a terminal here.                                      | S: paths:[]   |
 | sbot_tree               | C S  | Run tree cmd to new view.                                  | S: paths:[]   |
-| sbot_open_context_path  | C    | Open path under cursor like `[opt tag](C:\my\file.txt)`    |               |
+| sbot_open_context_path  | C    | Open path under cursor like `[opt tag](my/file.txt)`       |               |
 | sbot_insert_line_indexes| C    | Insert line numbers at beginning of line                   |               |
 | sbot_trim               | C    | Remove ws from Line ends.                                  | how: leading OR trailing OR both |
 | sbot_remove_empty_lines | C    | Like it says.                                              | how: remove_all OR normalize ( to one) |
@@ -85,5 +85,5 @@ Right click stuff works best with this global setting:
 
 - `sbot_common.py` contains miscellaneous common components primarily for internal use by the sbot family.
   This includes a very simple logger primarily for user-facing information, syntax errors and the like.
-  Log file is in `<ST_PACKAGES_DIR>\User\Residuum\Residuum.log`.
+  Log file is in `<ST_PACKAGES_DIR>/User/Residuum/Residuum.log`.
 - `tests` dir doesn't contain actual unit tests, just a bunch of files to use as targets manually.
